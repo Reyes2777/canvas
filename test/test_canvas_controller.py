@@ -68,6 +68,13 @@ def test_create_canvas(data_test):
                                               '|                    |\n'
                                               '|                    |\n'
                                               '|                    |\n'
+                                              '----------------------\n'}),
+                                ({'x1': 7, 'y1': 2, 'x2': 7, 'y2': 4,
+                                  'response': '----------------------\n'
+                                              '|                    |\n'
+                                              '|      x             |\n'
+                                              '|      x             |\n'
+                                              '|      x             |\n'
                                               '----------------------\n'})
 
                                 )
@@ -77,3 +84,21 @@ def test_draw_line(data_test):
     canvas_controller.draw_line(x1=data_test['x1'], y1=data_test['y1'], x2=data_test['x2'], y2=data_test['y2'])
     assert canvas_controller.canvas == data_test['response']
 
+
+@mark.parametrize('data_test', (({'line_one': {'x1': 1, 'y1': 2, 'x2': 6, 'y2': 2},
+                                  'line_two': {'x1': 6, 'y1': 3, 'x2': 6, 'y2': 4},
+                                  'response': '----------------------\n'
+                                              '|                    |\n'
+                                              '|xxxxxx              |\n'
+                                              '|     x              |\n'
+                                              '|     x              |\n'
+                                              '----------------------\n'}),
+                                )
+                  )
+def test_draw_some_lines(data_test):
+    line_one = data_test['line_one']
+    line_two = data_test['line_two']
+    canvas_controller = CanvasController(20, 4)
+    canvas_controller.draw_line(x1=line_one['x1'], y1=line_one['y1'], x2=line_one['x2'], y2=line_one['y2'])
+    canvas_controller.draw_line(x1=line_two['x1'], y1=line_two['y1'], x2=line_two['x2'], y2=line_two['y2'])
+    assert canvas_controller.canvas == data_test['response']
