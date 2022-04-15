@@ -44,20 +44,25 @@ class CanvasController:
             self.list_lines_canvas.insert(-1, f'|{self.wide_canvas * " "}|')
         self._draw_canvas()
 
-    def _draw_line_horizontal(self, x1, x2, y2):
+    def _draw_line_horizontal(self, x1: int, x2: int, y2: int):
         long_line = x2 - (x1 - 1)
         stop = x1 + long_line
         self.list_lines_canvas[y2] = self.list_lines_canvas[y2][:x1] + ('x' * long_line) +\
             self.list_lines_canvas[y2][stop:]
 
-    def _draw_line_vertical(self, y1, y2, x1):
+    def _draw_line_vertical(self, y1: int, y2: int, x1: int):
         for value in range(y1, y2 + 1):
             self.list_lines_canvas[value] = self.list_lines_canvas[y2][:x1] + 'x' + self.list_lines_canvas[value][
                                                                                     x1 + 1:]
 
-    def draw_line(self, x1, y1, x2, y2):
+    def draw_line(self, x1: int, y1: int, x2: int, y2: int):
+        if not type(x1) is int or not type(x2) is int or not type(y1) is int or not type(y2) is int:
+            raise Exception('All values should be integers')
         if x1 == x2:
             self._draw_line_vertical(y1=y1, y2=y2, x1=x1)
         elif y1 == y2:
             self._draw_line_horizontal(x1=x1, x2=x2, y2=y2)
+        else:
+            raise Exception('This app not draw diagonal lines')
         self._draw_canvas()
+

@@ -102,3 +102,22 @@ def test_draw_some_lines(data_test):
     canvas_controller.draw_line(x1=line_one['x1'], y1=line_one['y1'], x2=line_one['x2'], y2=line_one['y2'])
     canvas_controller.draw_line(x1=line_two['x1'], y1=line_two['y1'], x2=line_two['x2'], y2=line_two['y2'])
     assert canvas_controller.canvas == data_test['response']
+
+
+@mark.parametrize('data_test', (({'x1': 1, 'y1': 1, 'x2': 20, 'y2': 4, 'response': 'This app not draw diagonal lines'}),
+                                ({'x1': 'A', 'y1': 1, 'x2': 20, 'y2': 4, 'response': 'All values should be integers'}),
+                                ({'x1': 1, 'y1': 'B', 'x2': 20, 'y2': 4, 'response': 'All values should be integers'}),
+                                ({'x1': 1, 'y1': 1, 'x2': '20', 'y2': 4, 'response': 'All values should be integers'}),
+                                ({'x1': 1, 'y1': 1, 'x2': 20, 'y2': '4', 'response': 'All values should be integers'}),
+                                ))
+def test_draw_diagonal_line(data_test):
+    canvas_controller = CanvasController(20, 4)
+    with pytest.raises(Exception) as error:
+        canvas_controller.draw_line(x1=data_test['x1'], y1=data_test['y1'], x2=data_test['x2'], y2=data_test['y2'])
+    assert canvas_controller.canvas == '----------------------\n' \
+                                       '|                    |\n' \
+                                       '|                    |\n' \
+                                       '|                    |\n' \
+                                       '|                    |\n' \
+                                       '----------------------\n'
+    assert str(error.value) == data_test['response']
