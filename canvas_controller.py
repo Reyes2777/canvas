@@ -52,8 +52,8 @@ class CanvasController:
 
     def _draw_line_vertical(self, axis_y1: int, axis_y2: int, axis_x: int):
         for value in range(axis_y1, axis_y2 + 1):
-            self.list_lines_canvas[value] = self.list_lines_canvas[axis_y2][:axis_x] + 'x' + self.list_lines_canvas[value][
-                                                                                             axis_x + 1:]
+            self.list_lines_canvas[value] = self.list_lines_canvas[value][:axis_x] + 'x' + \
+                self.list_lines_canvas[value][axis_x + 1:]
 
     def _draw_manage_errors(self, axis_x1: int, axis_y1: int, axis_x2: int, axis_y2: int):
         if not type(axis_x1) is int or not type(axis_x2) is int or not type(axis_y1) is int or not type(axis_y2) is int:
@@ -74,9 +74,12 @@ class CanvasController:
 
     def draw_rectangle(self, axis_x1: int, axis_y1: int, axis_x2: int, axis_y2: int):
         self._draw_manage_errors(axis_x1=axis_x1, axis_y1=axis_y1, axis_x2=axis_x2, axis_y2=axis_y2)
-        self._draw_line_vertical(axis_y1=axis_y1, axis_y2=axis_y2, axis_x=axis_x1)
-        self._draw_line_vertical(axis_y1=axis_y1, axis_y2=axis_y2, axis_x=axis_x2)
-        self._draw_line_horizontal(axis_x1=axis_x1, axis_x2=axis_x2, axis_y=axis_y1)
-        self._draw_line_horizontal(axis_x1=axis_x1, axis_x2=axis_x2, axis_y=axis_y2)
-        self._draw_canvas()
+        self.draw_line(axis_y1=axis_y1, axis_y2=axis_y2, axis_x1=axis_x1, axis_x2=axis_x1)
+        self.draw_line(axis_x1=axis_x1, axis_x2=axis_x2, axis_y1=axis_y1, axis_y2=axis_y1)
+        self.draw_line(axis_y1=axis_y1, axis_y2=axis_y2, axis_x2=axis_x2, axis_x1=axis_x2)
+        self.draw_line(axis_x1=axis_x1, axis_x2=axis_x2, axis_y1=axis_y2, axis_y2=axis_y2)
 
+    def bucket_fill(self, axis_x: int, axis_y: int, patron: str = 'o'):
+        for number_line in range(0, self.height_canvas + 1):
+            self.list_lines_canvas[number_line] = self.list_lines_canvas[number_line].replace(" ", patron)
+        self._draw_canvas()

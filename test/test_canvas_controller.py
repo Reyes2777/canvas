@@ -141,3 +141,17 @@ def test_draw_square(data_test):
     canvas_controller = CanvasController(20, 4)
     canvas_controller.draw_rectangle(axis_x1=square['x1'], axis_x2=square['x2'], axis_y1=square['y1'], axis_y2=square['y2'])
     assert canvas_controller.canvas == data_test['response']
+
+
+def test_blank_fill():
+    canvas_controller = CanvasController(20, 4)
+    canvas_controller.draw_line(axis_x1=1, axis_y1=2, axis_x2=6, axis_y2=2)
+    canvas_controller.draw_line(axis_x1=6, axis_y1=3, axis_x2=6, axis_y2=4)
+    canvas_controller.draw_rectangle(axis_x1=16, axis_y1=1, axis_x2=20, axis_y2=3)
+    canvas_controller.bucket_fill(3, 3)
+    assert canvas_controller.canvas == '----------------------\n'\
+                                       '|oooooooooooooooxxxxx|\n'\
+                                       '|xxxxxxooooooooox   x|\n'\
+                                       '|     xoooooooooxxxxx|\n'\
+                                       '|     xoooooooooooooo|\n'\
+                                       '----------------------\n'
