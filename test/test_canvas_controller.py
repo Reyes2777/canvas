@@ -139,5 +139,5 @@ def test_draw_diagonal_line(data_test):
 def test_draw_square(data_test):
     square = data_test['square']
     canvas_controller = CanvasController(20, 4)
-    canvas_controller.draw_square(axis_x1=square['x1'], axis_x2=square['x2'], axis_y1=square['y1'], axis_y2=square['y2'])
+    canvas_controller.draw_rectangle(axis_x1=square['x1'], axis_x2=square['x2'], axis_y1=square['y1'], axis_y2=square['y2'])
     assert canvas_controller.canvas == data_test['response']

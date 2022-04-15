@@ -72,7 +72,7 @@ class CanvasController:
             raise Exception('This app not draw diagonal lines')
         self._draw_canvas()
 
-    def draw_square(self, axis_x1: int, axis_y1: int, axis_x2: int, axis_y2: int):
+    def draw_rectangle(self, axis_x1: int, axis_y1: int, axis_x2: int, axis_y2: int):
         self._draw_manage_errors(axis_x1=axis_x1, axis_y1=axis_y1, axis_x2=axis_x2, axis_y2=axis_y2)
         self._draw_line_vertical(axis_y1=axis_y1, axis_y2=axis_y2, axis_x=axis_x1)
         self._draw_line_vertical(axis_y1=axis_y1, axis_y2=axis_y2, axis_x=axis_x2)
