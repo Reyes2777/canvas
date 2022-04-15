@@ -44,25 +44,39 @@ class CanvasController:
             self.list_lines_canvas.insert(-1, f'|{self.wide_canvas * " "}|')
         self._draw_canvas()
 
-    def _draw_line_horizontal(self, x1: int, x2: int, y2: int):
-        long_line = x2 - (x1 - 1)
-        stop = x1 + long_line
-        self.list_lines_canvas[y2] = self.list_lines_canvas[y2][:x1] + ('x' * long_line) +\
-            self.list_lines_canvas[y2][stop:]
+    def _draw_line_horizontal(self, axis_x1: int, axis_x2: int, axis_y: int):
+        long_line = axis_x2 - (axis_x1 - 1)
+        stop = axis_x1 + long_line
+        self.list_lines_canvas[axis_y] = self.list_lines_canvas[axis_y][:axis_x1] + ('x' * long_line) + \
+            self.list_lines_canvas[axis_y][stop:]
 
-    def _draw_line_vertical(self, y1: int, y2: int, x1: int):
-        for value in range(y1, y2 + 1):
-            self.list_lines_canvas[value] = self.list_lines_canvas[y2][:x1] + 'x' + self.list_lines_canvas[value][
-                                                                                    x1 + 1:]
+    def _draw_line_vertical(self, axis_y1: int, axis_y2: int, axis_x: int):
+        for value in range(axis_y1, axis_y2 + 1):
+            self.list_lines_canvas[value] = self.list_lines_canvas[axis_y2][:axis_x] + 'x' + self.list_lines_canvas[value][
+                                                                                             axis_x + 1:]
 
-    def draw_line(self, x1: int, y1: int, x2: int, y2: int):
-        if not type(x1) is int or not type(x2) is int or not type(y1) is int or not type(y2) is int:
+    def _draw_manage_errors(self, axis_x1: int, axis_y1: int, axis_x2: int, axis_y2: int):
+        if not type(axis_x1) is int or not type(axis_x2) is int or not type(axis_y1) is int or not type(axis_y2) is int:
             raise Exception('All values should be integers')
-        if x1 == x2:
-            self._draw_line_vertical(y1=y1, y2=y2, x1=x1)
-        elif y1 == y2:
-            self._draw_line_horizontal(x1=x1, x2=x2, y2=y2)
+        if axis_x1 > self.wide_canvas or axis_x2 > self.wide_canvas or axis_y1 > self.height_canvas or \
+                axis_y2 > self.height_canvas:
+            raise Exception('Line out of area canvas')
+
+    def draw_line(self, axis_x1: int, axis_y1: int, axis_x2: int, axis_y2: int):
+        self._draw_manage_errors(axis_x1=axis_x1, axis_y1=axis_y1, axis_x2=axis_x2, axis_y2=axis_y2)
+        if axis_x1 == axis_x2:
+            self._draw_line_vertical(axis_y1=axis_y1, axis_y2=axis_y2, axis_x=axis_x1)
+        elif axis_y1 == axis_y2:
+            self._draw_line_horizontal(axis_x1=axis_x1, axis_x2=axis_x2, axis_y=axis_y2)
         else:
             raise Exception('This app not draw diagonal lines')
+        self._draw_canvas()
+
+    def draw_square(self, axis_x1: int, axis_y1: int, axis_x2: int, axis_y2: int):
+        self._draw_manage_errors(axis_x1=axis_x1, axis_y1=axis_y1, axis_x2=axis_x2, axis_y2=axis_y2)
+        self._draw_line_vertical(axis_y1=axis_y1, axis_y2=axis_y2, axis_x=axis_x1)
+        self._draw_line_vertical(axis_y1=axis_y1, axis_y2=axis_y2, axis_x=axis_x2)
+        self._draw_line_horizontal(axis_x1=axis_x1, axis_x2=axis_x2, axis_y=axis_y1)
+        self._draw_line_horizontal(axis_x1=axis_x1, axis_x2=axis_x2, axis_y=axis_y2)
         self._draw_canvas()
 
