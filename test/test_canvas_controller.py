@@ -114,7 +114,7 @@ def test_draw_some_lines(data_test):
                                 ({'x1': 1, 'y1': 6, 'x2': 6, 'y2': 8, 'response': 'Line out of area canvas'}),
                                 ({'x1': 1, 'y1': 4, 'x2': 35, 'y2': 8, 'response': 'Line out of area canvas'}),
                                 ))
-def test_draw_diagonal_line(data_test):
+def test_draw_manage_errors(data_test):
     canvas_controller = CanvasController(20, 4)
     with pytest.raises(Exception) as error:
         canvas_controller.draw_line(axis_x1=data_test['x1'], axis_y1=data_test['y1'], axis_x2=data_test['x2'], axis_y2=data_test['y2'])
