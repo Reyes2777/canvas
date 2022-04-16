@@ -79,7 +79,18 @@ class CanvasController:
         self.draw_line(axis_y1=axis_y1, axis_y2=axis_y2, axis_x2=axis_x2, axis_x1=axis_x2)
         self.draw_line(axis_x1=axis_x1, axis_x2=axis_x2, axis_y1=axis_y2, axis_y2=axis_y2)
 
-    def bucket_fill(self, axis_x: int, axis_y: int, patron: str = 'o'):
-        for number_line in range(0, self.height_canvas + 1):
-            self.list_lines_canvas[number_line] = self.list_lines_canvas[number_line].replace(" ", patron)
-        self._draw_canvas()
+    def _fill_quarter_from_point(self, axis_x: int, axis_y: int, value_x: str, value_y: str, patron: str = 'o'):
+        quarter = {'right': [1, 0], 'left': [-1, 0], 'up': [0, -1], 'down': [0, 1]}
+        if self.list_lines_canvas[axis_y][axis_x] not in ('x', '|', '-'):
+            self.list_lines_canvas[axis_y] = self.list_lines_canvas[axis_y][:axis_x] + patron + \
+                                             self.list_lines_canvas[axis_y][axis_x + 1:]
+            self._fill_quarter_from_point(axis_x=axis_x + quarter[value_x][0], axis_y=axis_y + quarter[value_x][1], value_x=value_x, value_y=value_y)
+            self._fill_quarter_from_point(axis_x=axis_x + quarter[value_y][0], axis_y=axis_y + quarter[value_y][1], value_x=value_x, value_y=value_y)
+            self._draw_canvas()
+
+    def bucket_fill(self, axis_x: int, axis_y: int):
+        self._fill_quarter_from_point(axis_x=axis_x, axis_y=axis_y, value_x='left', value_y='up')
+        self._fill_quarter_from_point(axis_x=axis_x, axis_y=axis_y, value_x='right', value_y='up')
+        self._fill_quarter_from_point(axis_x=axis_x, axis_y=axis_y, value_x='left', value_y='down')
+        self._fill_quarter_from_point(axis_x=axis_x, axis_y=axis_y, value_x='right', value_y='down')
+
