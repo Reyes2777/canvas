@@ -19,7 +19,6 @@ class MainApp:
     def execute_file(self):
         self._read_file()
         line = self._input_lines[0].split()
-        print(line)
         if line[0] != 'C':
             raise Exception('Is need first create Canvas board, The first line should be (C {value_x} {value_y})')
         canvas_controller = CanvasController(int(line[1]), int(line[2]))
