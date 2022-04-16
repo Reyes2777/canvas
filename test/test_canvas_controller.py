@@ -143,15 +143,50 @@ def test_draw_square(data_test):
     assert canvas_controller.canvas == data_test['response']
 
 
-def test_blank_fill():
+@mark.parametrize('data_test', (({'buquet_fill': {'x': 10, 'y': 3},
+                                  'response': '----------------------\n'
+                                              '|oooooooooooooooxxxxx|\n'
+                                              '|xxxxxxooooooooox   x|\n'
+                                              '|     xoooooooooxxxxx|\n'
+                                              '|     xoooooooooooooo|\n'
+                                              '----------------------\n'}),
+                                ({'buquet_fill': {'x': 4, 'y': 3},
+                                  'response': '----------------------\n'
+                                              '|               xxxxx|\n'
+                                              '|xxxxxx         x   x|\n'
+                                              '|ooooox         xxxxx|\n'
+                                              '|ooooox              |\n'
+                                              '----------------------\n'}),
+                                ({'buquet_fill': {'x': 17, 'y': 2},
+                                  'response': '----------------------\n'
+                                              '|               xxxxx|\n'
+                                              '|xxxxxx         xooox|\n'
+                                              '|     x         xxxxx|\n'
+                                              '|     x              |\n'
+                                              '----------------------\n'})
+                                ))
+def test_blank_fill(data_test):
+    buquet_fill = data_test['buquet_fill']
     canvas_controller = CanvasController(20, 4)
     canvas_controller.draw_line(axis_x1=1, axis_y1=2, axis_x2=6, axis_y2=2)
     canvas_controller.draw_line(axis_x1=6, axis_y1=3, axis_x2=6, axis_y2=4)
     canvas_controller.draw_rectangle(axis_x1=16, axis_y1=1, axis_x2=20, axis_y2=3)
-    canvas_controller.bucket_fill(10, 3)
-    assert canvas_controller.canvas == '----------------------\n'\
-                                       '|oooooooooooooooxxxxx|\n'\
-                                       '|xxxxxxooooooooox   x|\n'\
-                                       '|     xoooooooooxxxxx|\n'\
-                                       '|     xoooooooooooooo|\n'\
-                                       '----------------------\n'
+    canvas_controller.bucket_fill(axis_x=buquet_fill['x'], axis_y=buquet_fill['y'])
+    assert canvas_controller.canvas == data_test['response']
+
+
+@mark.parametrize('data_test', (({'buquet_fill': {'x': 25, 'y': 3},
+                                  'response': '----------------------\n'
+                                              '|                    |\n'
+                                              '|                    |\n'
+                                              '|                    |\n'
+                                              '|                    |\n'
+                                              '----------------------\n'}),
+                                ))
+def test_blank_fill_error(data_test):
+    buquet_fill = data_test['buquet_fill']
+    canvas_controller = CanvasController(20, 4)
+    with pytest.raises(Exception) as error:
+        canvas_controller.bucket_fill(axis_x=buquet_fill['x'], axis_y=buquet_fill['y'])
+    assert canvas_controller.canvas == data_test['response']
+    assert str(error.value) == 'Point out of area canvas'

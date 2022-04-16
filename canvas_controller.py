@@ -89,6 +89,8 @@ class CanvasController:
             self._draw_canvas()
 
     def bucket_fill(self, axis_x: int, axis_y: int):
+        if axis_x > self.wide_canvas or axis_y > self.height_canvas:
+            raise Exception('Point out of area canvas')
         self._fill_quarter_from_point(axis_x=axis_x, axis_y=axis_y, value_x='left', value_y='up')
         self._fill_quarter_from_point(axis_x=axis_x, axis_y=axis_y, value_x='right', value_y='up')
         self._fill_quarter_from_point(axis_x=axis_x, axis_y=axis_y, value_x='left', value_y='down')
