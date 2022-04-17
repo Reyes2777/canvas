@@ -7,8 +7,8 @@ class MainApp:
     """
     This is class reads input file to process data and execute order to finally write in output file
     Attributes:
-        _input_file_name (str): file name with extension .txt where extract orders to exec in canvas board
-        _output_file_name (str): file name where with extension .txt write all orders executed in canvas board
+        input_file_name (str): file name with extension .txt where extract orders to exec in canvas board
+        output_file_name (str): file name where with extension .txt write all orders executed in canvas board
         _input_lines (list): list where save lines to execute orders in canvas board
         _output_lines (list) list where save lines to write in output file after executed all order in canvas board
 
@@ -23,35 +23,34 @@ class MainApp:
 
     def __init__(self, input_file_name: str, output_file_name: str):
         """
-                The constructor for MainApp class.
-
-                Parameters:
-                    input_file_name (str): file name with extension .txt where extract orders to
-                    execute in canvas board
-                    output_file_name (str): file name where with extension .txt write all orders
-                    executed in canvas board
-                """
-        self._input_file_name = input_file_name
-        self._output_file_name = output_file_name
+        The constructor for MainApp class.
+        Parameters:
+            input_file_name (str): file name with extension .txt where extract orders to
+                                   execute in canvas board
+            output_file_name (str): file name where with extension .txt write all orders
+                                   executed in canvas board
+        """
+        self.input_file_name = input_file_name
+        self.output_file_name = output_file_name
         self._input_lines = None
         self._output_lines = None
         self._read_file()
 
     def _read_file(self):
-        with open(self._input_file_name, 'r') as file:
+        with open(self.input_file_name, 'r') as file:
             self._input_lines = file.readlines()
 
     def _write_file(self):
-        with open(self._output_file_name, 'w') as file:
+        with open(self.output_file_name, 'w') as file:
             file.writelines(self._output_lines)
 
     def execute_file(self):
         """
-                The function execute all order in _input_lines and write _output_lines after execute all
-                order in canvas board.
+        The function execute all order in _input_lines and write _output_lines after execute all
+        order in canvas board.
 
-                Returns:
-                    Create a file with name _output_file_name
+        Returns:
+            Create a file with name _output_file_name
          """
         line = self._input_lines[0].split()
         if line[0] != 'C':
