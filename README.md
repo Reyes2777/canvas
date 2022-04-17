@@ -5,6 +5,7 @@ This Project Canvas is challenge proposed by Huge.
 
 How use app
 -------
+Install requirements: ``pip install -r requirements.txt``
 
 Write file with extension .txt whit next params:
 
